@@ -1,6 +1,7 @@
 package org.milestone;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Evento {
 
@@ -69,15 +70,56 @@ public class Evento {
 
     }
 
-    public int getPostiTot(){
+    public int getPostiTotali(){
 
         return postiTotali;
 
     }
 
-    public int getPostiBooked(){
+    public int getPostiPrenotati(){
 
         return postiPrenotati;
 
     }
+    //Adesso creiamo i tre metodi finali prenota, disdici e toString indicati nello Step 1 della traccia. Il primo, soddisfatta una delle due  condizioni, aggiunge 1 posto aggiornando il valore di postiPrenotati
+    public void prenota(){
+
+        if (postiTotali > postiPrenotati && !data.isBefore(LocalDate.now())){
+
+            postiPrenotati ++;
+
+        } else {
+
+            throw new IllegalArgumentException("Errore: posti esauriti o evento già passato.");
+
+        }
+
+    }
+
+    public void disdici(){
+
+        if (postiPrenotati > 0 && !data.isBefore(LocalDate.now())){
+
+            postiPrenotati --;
+
+        } else {
+
+            throw new IllegalArgumentException("Errore: nessuna prenotazione da cancellare o evento già passato.");
+
+        }
+
+    }
+
+    //Con @Override andiamo a riscrivere il metodo toString() nell'occasione di utilizzo della nostra classe Evento. All'interno del metodo così rifatto, metto in uso la classe DateTimeFormatter dopo aver richiamato il package java.time.format. Quindi creo l'oggetto formaData su cui uso il metodo ofPattern per dare lo "stampino" in cui voglio riversare giorno, mese e anno e quindi creo la nuova variabile stringa dataFormattata letteralmente formattando data con formatData. Infine ritorno il messaggio come da traccia.
+    @Override
+    public String toString(){
+
+        DateTimeFormatter formatData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormattata = data.format(formatData);
+
+        return dataFormattata + " " + titolo;
+
+    }
+
+
 }
