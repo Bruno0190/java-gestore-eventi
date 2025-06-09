@@ -91,13 +91,53 @@ public class Main {
 
         Evento evento = new Evento(titolo, data, postiTotali);
 
+        int postiPrenotati = 0;
+        boolean postiSuperati = false;
 
-    
-        
+        while(postiSuperati && postiPrenotati<postiTotali){
 
+            String risposta = "";
+            System.out.println("Vuoi prenotare un posto?si/no");
+            risposta = input.nextLine();
+            if (risposta == "si"){
 
+                evento.prenota();
 
+                String newRisposta = "";
 
+                while(newRisposta == "si"){
+                System.out.println("Vuoi aggiungere un posto?si/no");
+                newRisposta = input.nextLine();
+
+                evento.prenota();
+
+                }
+
+            }
+
+            System.out.println("Devi disdire un posto?");
+            risposta = input.nextLine();
+
+            if (risposta == "si"){
+
+                evento.disdici();
+
+                String newRisposta = "";
+
+                while(newRisposta == "si"){
+                System.out.println("Vuoi disdire un altro posto?si/no");
+                newRisposta = input.nextLine();
+
+                evento.disdici();
+
+                }
+
+            }
+
+        }
+        System.out.println(evento.toString());
+        System.out.println(evento.getPostiTotali());
+        System.out.println(evento.getPostiPrenotati());
 
 
         input.close();

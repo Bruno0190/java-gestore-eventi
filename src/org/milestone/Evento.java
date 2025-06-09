@@ -117,7 +117,7 @@ public class Evento {
         DateTimeFormatter formatData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormattata = data.format(formatData);
 
-        return dataFormattata + " " + titolo;
+        return dataFormattata + " - " + titolo;
 
     }
 
