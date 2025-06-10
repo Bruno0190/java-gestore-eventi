@@ -78,6 +78,7 @@ public class Main {
             if (input.hasNextInt()){
 
                 postiTotali = input.nextInt();
+                input.nextLine();
                 numeroValido = true;
 
             } else {
@@ -92,49 +93,49 @@ public class Main {
         Evento evento = new Evento(titolo, data, postiTotali);
 
         int postiPrenotati = 0;
-        boolean postiSuperati = false;
-
-        while(postiSuperati && postiPrenotati<postiTotali){
-
-            String risposta = "";
+        
+        String risposta = "";
+        while(postiPrenotati<postiTotali){           
             System.out.println("Vuoi prenotare un posto?si/no");
             risposta = input.nextLine();
-            if (risposta == "si"){
+            if (risposta.equalsIgnoreCase("si")){
 
                 evento.prenota();
+                evento.getPostiPrenotati();
 
-                String newRisposta = "";
+                String newRisposta = "si";
 
-                while(newRisposta == "si"){
+                while(newRisposta.equalsIgnoreCase("si")){
                 System.out.println("Vuoi aggiungere un posto?si/no");
                 newRisposta = input.nextLine();
 
                 evento.prenota();
+                evento.getPostiPrenotati();
 
                 }
 
             }
+        }
+        System.out.println("Devi disdire un posto?");
+        risposta = input.nextLine();
 
-            System.out.println("Devi disdire un posto?");
-            risposta = input.nextLine();
+        if (risposta.equalsIgnoreCase("si")){
 
-            if (risposta == "si"){
+            evento.disdici();
 
-                evento.disdici();
+            String newRisposta = "";
 
-                String newRisposta = "";
+            while(newRisposta.equalsIgnoreCase("si")){
+            System.out.println("Vuoi disdire un altro posto?si/no");
+            newRisposta = input.nextLine();
 
-                while(newRisposta == "si"){
-                System.out.println("Vuoi disdire un altro posto?si/no");
-                newRisposta = input.nextLine();
-
-                evento.disdici();
-
-                }
+            evento.disdici();
 
             }
 
         }
+
+        
         System.out.println(evento.toString());
         System.out.println(evento.getPostiTotali());
         System.out.println(evento.getPostiPrenotati());
