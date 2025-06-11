@@ -22,7 +22,7 @@ public class Evento {
         this.postiPrenotati = 0;
 
         /*Di seguito abbiamo dei controlli che come secondo traccia verificano che la data immessa come parametro non sia antecedente a quella odierna e che i posti totali del posto ove avverrà luogo l'evento non siano negativi, ma nemmeno nulli.
-        I controlli funzionano grazie a "IllegalArgumentException" che di fatto è una sottocalsse della classe Exception. Infatti per essere istanziata si "lancia" con throw e quindi creata con new*/       
+        I controlli funzionano grazie a "IllegalArgumentException" che di fatto è una sottoclsse della classe Exception. Infatti per essere istanziata si "lancia" con throw e quindi creata con new*/       
         if (data.isBefore(LocalDate.now())){
 
             throw new IllegalArgumentException("Non puoi inserire una data passata");

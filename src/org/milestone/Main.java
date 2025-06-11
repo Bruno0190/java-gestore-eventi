@@ -75,7 +75,7 @@ public class Main {
 
             System.out.println("Quanti posti saranno disponibili all'evento? Utilizzare un numero");
 
-            if (input.hasNextInt()){
+            if (input.hasNextInt() && input.nextInt()!= 0){
 
                 postiTotali = input.nextInt();
                 input.nextLine();
@@ -83,7 +83,7 @@ public class Main {
 
             } else {
 
-                System.out.println("Devi inserire una cifra per il numero");
+                System.out.println("Devi inserire una cifra a numero e deve essere diverso da 0");
                 input.next();
             }
 
@@ -92,57 +92,78 @@ public class Main {
 
         Evento evento = new Evento(titolo, data, postiTotali);
 
-        int postiPrenotati = 0;
-        
-        String risposta = "";
-        while(postiPrenotati<postiTotali){           
-            System.out.println("Vuoi prenotare un posto?si/no");
-            risposta = input.nextLine();
-            if (risposta.equalsIgnoreCase("si")){
-
-                evento.prenota();
-                evento.getPostiPrenotati();
-
-                String newRisposta = "si";
-
-                while(newRisposta.equalsIgnoreCase("si")){
-                System.out.println("Vuoi aggiungere un posto?si/no");
-                newRisposta = input.nextLine();
-
-                evento.prenota();
-                evento.getPostiPrenotati();
-
-                }
-
-            }
-        }
-        System.out.println("Devi disdire un posto?");
+        int postiDaPrenotare = 0;
+        String risposta;
+        System.out.println("Desideri prenotare dei posti?si/no");
         risposta = input.nextLine();
 
-        if (risposta.equalsIgnoreCase("si")){
+        while (risposta.equalsIgnoreCase("si")) {
+            System.out.println("Quanti?");
+            
+            if(input.hasNextInt()&& input.nextInt()!= 0) {
+                postiDaPrenotare = input.nextInt();
+                input.nextLine();
 
-            evento.disdici();
+                if(postiDaPrenotare <= (postiTotali - evento.getPostiPrenotati())) {
+                    for(int i = 0; i < postiDaPrenotare; i++) {
+                        evento.prenota();
+                    }
 
-            String newRisposta = "";
-
-            while(newRisposta.equalsIgnoreCase("si")){
-            System.out.println("Vuoi disdire un altro posto?si/no");
-            newRisposta = input.nextLine();
-
-            evento.disdici();
-
+                    System.out.println("Posti prenotati finora: " + evento.getPostiPrenotati());
+                    System.out.println("Posti disponibili rimasti: " + (postiTotali - evento.getPostiPrenotati()));
+                } else {
+                    System.out.println("Non ci sono abbastanza posti disponibili.");
+                }
+            } else {
+                System.out.println("Devi inserire un numero valido.");
+                input.nextLine(); // consuma input errato
             }
 
+            System.out.println("Desideri prenotare altri posti? si/no");
+            risposta = input.nextLine();
+            
         }
 
-        
-        System.out.println(evento.toString());
-        System.out.println(evento.getPostiTotali());
-        System.out.println(evento.getPostiPrenotati());
 
+        int postiDaCancellare = 0;
+        System.out.println("Desideri disdire dei posti?si/no");
+        risposta = input.nextLine();
+
+        while (risposta.equalsIgnoreCase("si")) {
+            System.out.println("Quanti?");
+            
+            if(input.hasNextInt() && input.nextInt()!= 0) {
+                postiDaCancellare = input.nextInt();
+                input.nextLine();
+
+                if(postiDaCancellare <= evento.getPostiPrenotati()) {
+                    for(int i = 0; i < postiDaCancellare; i++) {
+                        evento.disdici();
+                    }
+
+                    System.out.println("Posti prenotati finora: " + evento.getPostiPrenotati());
+                    System.out.println("Posti disponibili rimasti: " + (postiTotali - evento.getPostiPrenotati()));
+                } else {
+                    System.out.println("Errore stai cercando di disdire più posti di quelli prenotati");
+                }
+            } else {
+                System.out.println("Devi inserire un numero valido.");
+                input.nextLine(); // consuma input errato
+            }
+
+            System.out.println("Desideri cancellare altri posti? si/no");
+            risposta = input.nextLine();
+            
+        }
+
+
+        System.out.println("Titolo: " + evento.getTitolo());
+        System.out.println("Data: " + evento.getData());
+        System.out.println("Posti totali: " + evento.getPostiTotali());
+        System.out.println("Posti prenotati: " + evento.getPostiPrenotati());
 
         input.close();
-    }
+    } 
 
-    
-}
+} 
+
