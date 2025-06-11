@@ -51,34 +51,51 @@ public class Main {
             System.out.println("In quale data si svolgerà l'evento?Si prega di scrivere in formato dd/MM/yyyy");
             String dataInput = input.nextLine();
     
-    /*Usiamo un blocco try catch per andare a verificare se effettivamente l'utente ha inserito una data come vogliamo noi oppure no. Nelle parentesi di try, andiamo letteralmente a provare questa verifica che, nel qual caso si rivelasse giusta, impostiamo dataValida come true con conseguente uscita dal ciclo while*/
+    /*Usiamo un blocco try catch per andare a verificare se effettivamente l'utente ha inserito una data come vogliamo noi e se la data è futura oppure no. Nelle parentesi di try, andiamo letteralmente a provare la prima verifica mentre con un interno blocco if osserviamo la seconda verifica. Nel qual caso si rivelasse giusta, impostiamo dataValida come true con conseguente uscita dal ciclo while*/
 
             try{
 
                 data = LocalDate.parse(dataInput, formatData);
-                dataValida = true;
+
+                
+                if (data.isBefore(LocalDate.now())){
+
+                    throw new IllegalArgumentException("Non puoi inserire una data passata");         
+        
+                } else {
+
+                    dataValida = true;
+                }
+               
     
-    /*Altrimenti catch si occupa di "acchiappare" l'eccezione (che va sempre tipizzata, in questo caso DateTime... e nominata, solitamente si usa semplicemente "e" ) e quindi lanciare un avviso e riprendere il ciclo*/
+    /*Altrimenti catch si occupa di "acchiappare" le due eccezioni (che vanno sempre tipizzata, in questo caso DateTimeParseException e IllegalArgumentException. Queste vanno nominate, solitamente si usa semplicemente "e" ) e quindi lanciare un avviso e riprendere il ciclo*/
 
             } catch (DateTimeParseException e){
 
                 System.out.println("Formato data non valido, riprovare perfavore.");
 
+            } catch (IllegalArgumentException e) {
+    //Il messaggio che viene lanciato in caso di questa seconda eccezione viene recuperato tramite il metodo getMessage() che corrisponde a quello sopra scritto in riferimento a quest'eccezione
+                System.out.println(e.getMessage());
+
             }
+
+
 
         }
 
         boolean numeroValido = false;
         int postiTotali = 0;
-
+    //Dopo avere inizializzato numeroValido e postiTotali, creiamo un loop while che si cicla fintanto che la variabile numeroValido non sia falsa, ovvero sia vera
         while(!numeroValido){
 
             System.out.println("Quanti posti saranno disponibili all'evento? Utilizzare un numero");
-
-            if (input.hasNextInt() && input.nextInt()!= 0){
+    //Faccio attentione che si sia inserito effettivamente un numero con il metodo hasNextInt
+            if (input.hasNextInt()){
 
                 postiTotali = input.nextInt();
                 input.nextLine();
+
                 numeroValido = true;
 
             } else {
@@ -88,22 +105,25 @@ public class Main {
             }
 
         }
+
         
-
+    //Creo quindi il mio oggetto evento dalla Classe Evento avendomi procurato sopra i parametri per istanziarlo
         Evento evento = new Evento(titolo, data, postiTotali);
-
+    
+    //Inizializzo la variabile postiDaPrenotare e risposta
         int postiDaPrenotare = 0;
         String risposta;
         System.out.println("Desideri prenotare dei posti?si/no");
         risposta = input.nextLine();
 
+    //Fintanto che la risposta, case insensitive sia uguale a si procevo con il loop
         while (risposta.equalsIgnoreCase("si")) {
             System.out.println("Quanti?");
             
-            if(input.hasNextInt()&& input.nextInt()!= 0) {
+            if(input.hasNextInt()) {
                 postiDaPrenotare = input.nextInt();
                 input.nextLine();
-
+    //Mi assicuro nella seguente condizione che i posti richiesti non siano superiori a quelli ancora disponibili
                 if(postiDaPrenotare <= (postiTotali - evento.getPostiPrenotati())) {
                     for(int i = 0; i < postiDaPrenotare; i++) {
                         evento.prenota();
@@ -124,7 +144,7 @@ public class Main {
             
         }
 
-
+    //La stessa logica di sopra la riutilizzo per disdire i posti
         int postiDaCancellare = 0;
         System.out.println("Desideri disdire dei posti?si/no");
         risposta = input.nextLine();
@@ -132,7 +152,7 @@ public class Main {
         while (risposta.equalsIgnoreCase("si")) {
             System.out.println("Quanti?");
             
-            if(input.hasNextInt() && input.nextInt()!= 0) {
+            if(input.hasNextInt()) {
                 postiDaCancellare = input.nextInt();
                 input.nextLine();
 
