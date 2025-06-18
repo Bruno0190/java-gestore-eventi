@@ -368,9 +368,11 @@ public class Main {
 
                 }else{
                     System.out.println("Devi digitare un numero che sia 1 o 2");
+                    input.nextLine();
                 }
             }else{
                 System.out.println("Devi digitare un numero che sia 1 o 2");
+                input.nextLine();
             }
 
         } 
