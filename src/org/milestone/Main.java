@@ -247,6 +247,7 @@ public class Main {
                                 try{
 
                                     ora = LocalTime.parse(oraInput, oraFormat);
+                                    oraValida = true;
 
                                 } catch (DateTimeParseException e){
 
