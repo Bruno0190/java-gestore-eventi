@@ -29,9 +29,9 @@ public class Evento {
         
         }
 
-        if (postiTotali<0){
+        if (postiTotali<=0){
 
-            throw new IllegalArgumentException("Devi inserire numeri positivi");
+            throw new IllegalArgumentException("Devi inserire numeri maggiori di zero");
 
         }
 

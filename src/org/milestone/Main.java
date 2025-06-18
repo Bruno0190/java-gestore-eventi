@@ -2,6 +2,7 @@ package org.milestone;
 
 import java.util.Scanner;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -43,8 +44,10 @@ public class Main {
     /*Dopo aver chiesto il titolo ed averlo registrato come una semplice stringa, andiamo a chiedere la data. La data verrà sempre presa come una stringa ma dobbiamo convertirla in data. Per fare questo inizializziamo il valore data come nullo, tipizzato come una variabile LocalDate. Creiamo anche un pattern tramite DateTimeFormatter che vogliamo venga utilizzato per la data. Allora inizializziamo una variabile booleana dataValida a false.*/
 
         LocalDate data = null;
+        LocalTime ora = null;
         boolean dataValida = false;
         DateTimeFormatter formatData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter oraFormat = DateTimeFormatter.ofPattern("HH:mm");
     /*Prevedendo che il formato data possa non essere quello che vogliamo richiediamo la data all'interno di un ciclo while, la cui condizione di uscita sia che dataValida sia vera. */
         while(!dataValida){
 
@@ -176,11 +179,215 @@ public class Main {
             
         }
 
+        
 
         System.out.println("Titolo: " + evento.getTitolo());
         System.out.println("Data: " + evento.getData());
         System.out.println("Posti totali: " + evento.getPostiTotali());
         System.out.println("Posti prenotati: " + evento.getPostiPrenotati());
+
+        String titoloProgramma;
+        int tipo = 0;
+        boolean tipoGiusto = false;
+
+        System.out.println("Creiamo un programma eventi. Qual è il titolo?");
+        titoloProgramma = input.nextLine();
+
+        ProgrammaEventi programma = new ProgrammaEventi(titoloProgramma);
+
+        while(!tipoGiusto){
+
+            System.out.println("Si tratta di concerti o altro tipo? Digitare 1 per concerti e 2 per altro tipo");
+            if(input.hasNextInt()){
+                tipo = input.nextInt();
+                input.nextLine();
+                if(tipo == 1 || tipo == 2){
+                    tipoGiusto = true;
+                    risposta = "si";
+                    while(risposta.equalsIgnoreCase("si")){
+
+                        if(tipo == 1){
+
+                            System.out.println("Ok titolo concerto?");
+                            titolo = input.nextLine();
+
+                            dataValida = false;
+                            boolean oraValida = false;
+                            while(!dataValida || !oraValida){
+
+                                System.out.println("In quale data si svolgerà il concerto?Si prega di scrivere in formato dd/MM/yyyy");
+                                String dataInput = input.nextLine();
+
+                                try{
+
+                                    data = LocalDate.parse(dataInput, formatData);
+
+                                    
+                                    if (data.isBefore(LocalDate.now())){
+
+                                        throw new IllegalArgumentException("Non puoi inserire una data passata");         
+                            
+                                    } else {
+
+                                        dataValida = true;
+                                    }
+
+                                } catch (DateTimeParseException e){
+
+                                    System.out.println("Formato data non valido, riprovare perfavore.");
+
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println(e.getMessage());
+
+                                }
+
+                                System.out.println("A che ora si svolgerà il concerto?Si prega di scrivere in formato HH:mm");
+                                String oraInput = input.nextLine();
+
+                                try{
+
+                                    ora = LocalTime.parse(oraInput, oraFormat);
+
+                                } catch (DateTimeParseException e){
+
+                                    System.out.println("Formato ora non valido, riprovare perfavore.");
+
+                                }
+
+                            
+                            }
+                            numeroValido = false;
+                            while(!numeroValido){
+
+
+                                System.out.println("Quanti posti saranno disponibili al concerto? Utilizzare un numero");
+                                
+                                if (input.hasNextInt()){
+
+                                    postiTotali = input.nextInt();
+                                    input.nextLine();
+
+                                    numeroValido = true;
+
+                                } else {
+
+                                    System.out.println("Devi inserire una cifra a numero e deve essere diverso da 0");
+                                    input.next();
+                                }
+
+                            }
+
+                            boolean prezzoGiusto = false;
+                            double prezzo = 0.00;
+                            while(!prezzoGiusto){
+
+                                System.out.println("Quanto verrà il biglietto?Inserire cifra come 0.00");
+                                if(input.hasNextDouble()){
+                                    prezzo = input.nextDouble();
+                                    input.nextLine();
+                                    
+
+                                    prezzoGiusto = true;
+                                } else {
+                                    System.out.println("Errore, il prezzo deve essere scritto come 0.00");
+                                }
+                            }
+
+                            Concerto concerto = new Concerto(titolo, data, postiTotali, ora, prezzo);
+                            programma.addEvento(concerto);
+                            System.out.println("concerto aggiunto al programma");
+                            
+                        }else {
+
+                           System.out.println("Ok titolo evento?");
+                            titolo = input.nextLine();
+
+                            dataValida = false;
+                        
+                            while(!dataValida){
+
+                                System.out.println("In quale data si svolgerà l'evento?Si prega di scrivere in formato dd/MM/yyyy");
+                                String dataInput = input.nextLine();
+
+                                try{
+
+                                    data = LocalDate.parse(dataInput, formatData);
+
+                                    
+                                    if (data.isBefore(LocalDate.now())){
+
+                                        throw new IllegalArgumentException("Non puoi inserire una data passata");         
+                            
+                                    } else {
+
+                                        dataValida = true;
+                                    }
+
+                                } catch (DateTimeParseException e){
+
+                                    System.out.println("Formato data non valido, riprovare perfavore.");
+
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println(e.getMessage());
+
+                                }
+                            
+                            }
+
+                            numeroValido = false;
+                            while(!numeroValido){
+
+                                System.out.println("Quanti posti saranno disponibili all'evento? Utilizzare un numero");
+                                
+                                if (input.hasNextInt()){
+
+                                    postiTotali = input.nextInt();
+                                    input.nextLine();
+
+                                    numeroValido = true;
+
+                                } else {
+
+                                    System.out.println("Devi inserire una cifra a numero e deve essere diverso da 0");
+                                    input.next();
+                                }
+
+                            }
+
+                            Evento eventox = new Evento(titolo, data, postiTotali);
+                            programma.addEvento(eventox);
+                            System.out.println("evento aggiunto al programma");
+
+
+                        }
+                        
+                        System.out.println("Ne vuoi aggiungere altri?si/no");
+                        risposta = input.nextLine();
+
+                    }
+
+                }else{
+                    System.out.println("Devi digitare un numero che sia 1 o 2");
+                }
+            }else{
+                System.out.println("Devi digitare un numero che sia 1 o 2");
+            }
+
+        } 
+        System.out.println("Hai programmato " + programma.numeroEventi() + " eventi nel programma");
+        System.out.println(programma.programma());
+        LocalDate filtroData;
+        String filtro;
+        System.out.println("seleziona una data in base alla quale filtrare gli eventi. Sempre formato dd/MM/yyyy");
+        filtro = input.nextLine();
+
+        filtroData = LocalDate.parse(filtro, formatData);
+
+        System.out.println(programma.dataEventi(filtroData));
+
+
+        
+
 
         input.close();
     } 
