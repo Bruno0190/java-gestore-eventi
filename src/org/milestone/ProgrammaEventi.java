@@ -3,6 +3,7 @@ package org.milestone;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.Comparator;
 
 public class ProgrammaEventi {
 
@@ -32,22 +33,17 @@ public class ProgrammaEventi {
     /*Il secondo metodo invece ci porta a creare un nuovo oggettoArrayList fatto apposto per includere solo gli oggetti Evento dell ArrayList precedente eventi filtrati per data, che infatti passiamo come parametro */
 
     public List<Evento> dataEventi(LocalDate data){
+        List<Evento> filtrati = new ArrayList<>();
 
-        List<Evento> eventi = new ArrayList<>();
-
-        /*Il filtro è ottenuto tramite un ciclo for each e un blocco if */
-        for (Evento evento : eventi) {
-
+        for (Evento evento : this.eventi) {
             if (evento.getData().equals(data)){
-
-                eventi.add(evento);
-
+                filtrati.add(evento);
             }
+        }
 
-        }    
-        return eventi;
-
+        return filtrati;
     }
+
 
     /*Il terzo metodo ci richiede semplicemente il numero di eventi del programma che si ottiene con un semplice metodo tipico di ArrayList */
 
@@ -68,17 +64,26 @@ public class ProgrammaEventi {
 
     }
 
-    public String programma(){
+    public String programma() {
 
-        for(Evento evento : eventi){
+        // Creo un oggetto StringBuilder per costruire pezzo per pezzo la stringa finale. StringBuilder è una classe che consente di creare una dinamica sequenza di caratteri
+        StringBuilder forma = new StringBuilder();
 
-            String forma = evento.getData() + " - " + evento.getTitolo();
+        //.append() è il metodo con il quale letteralmente appendo nuovi parti all'oggetto StringBuilder
+        forma.append(titolo + "\n");
 
+        // Ordino la lista di eventi in base alla data, utilizzando il metodo .sort()
+        // Comparator è un oggetto che letteralmente compare le cose. Si usa il metodo.comparing() in cui si inserisce come parametri quali oggetti comparare e in base a quale filtro.
+        // Evento::getData è una scorciatoia per dire, usa .getData() per prendere le date di ogni oggetto Evento. Ovviamente l'oggetto evento è inteso appartenente alla lista eventi.
+        eventi.sort(Comparator.comparing(Evento::getData));
+
+        // Per ogni evento ordinato, aggiungo una riga con data e titolo
+        for (Evento evento : eventi) {
+            forma.append(evento.getData() + " - " + evento.getTitolo() + "\n");
         }
-        return 
+
+        // Ritorno la stringa completa (titolo + elenco degli eventi)
+        return forma.toString();
     }
-
-
-
 
 }
