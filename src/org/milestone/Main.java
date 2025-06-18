@@ -1,5 +1,6 @@
 package org.milestone;
 
+import java.util.List;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -213,49 +214,33 @@ public class Main {
 
                             dataValida = false;
                             boolean oraValida = false;
-                            while(!dataValida || !oraValida){
-
-                                System.out.println("In quale data si svolgerà il concerto?Si prega di scrivere in formato dd/MM/yyyy");
+                            while (!dataValida || !oraValida) {
+                                // chiedi data e prova a validarla
+                                System.out.println("In quale data si svolgerà il concerto? Si prega di scrivere in formato dd/MM/yyyy");
                                 String dataInput = input.nextLine();
-
-                                try{
-
+                                try {
                                     data = LocalDate.parse(dataInput, formatData);
-
-                                    
-                                    if (data.isBefore(LocalDate.now())){
-
-                                        throw new IllegalArgumentException("Non puoi inserire una data passata");         
-                            
-                                    } else {
-
-                                        dataValida = true;
+                                    if (data.isBefore(LocalDate.now())) {
+                                        throw new IllegalArgumentException("Non puoi inserire una data passata");
                                     }
-
-                                } catch (DateTimeParseException e){
-
-                                    System.out.println("Formato data non valido, riprovare perfavore.");
-
-                                } catch (IllegalArgumentException e) {
-                                    System.out.println(e.getMessage());
-
+                                    dataValida = true;
+                                } catch (Exception e) {
+                                    System.out.println("Errore nella data: " + e.getMessage());
+                                    dataValida = false;
                                 }
 
-                                System.out.println("A che ora si svolgerà il concerto?Si prega di scrivere in formato HH:mm");
-                                String oraInput = input.nextLine();
-
-                                try{
-
-                                    ora = LocalTime.parse(oraInput, oraFormat);
-                                    oraValida = true;
-
-                                } catch (DateTimeParseException e){
-
-                                    System.out.println("Formato ora non valido, riprovare perfavore.");
-
+                                // chiedi ora e prova a validarla solo se la data è valida
+                                if (dataValida) {
+                                    System.out.println("A che ora si svolgerà il concerto? Si prega di scrivere in formato HH:mm");
+                                    String oraInput = input.nextLine();
+                                    try {
+                                        ora = LocalTime.parse(oraInput, oraFormat);
+                                        oraValida = true;
+                                    } catch (DateTimeParseException e) {
+                                        System.out.println("Formato ora non valido, riprovare perfavore.");
+                                        oraValida = false;
+                                    }
                                 }
-
-                            
                             }
                             numeroValido = false;
                             while(!numeroValido){
@@ -379,17 +364,30 @@ public class Main {
         } 
         System.out.println("Hai programmato " + programma.numeroEventi() + " eventi nel programma");
         System.out.println(programma.programma());
-        LocalDate filtroData;
         String filtro;
+
         System.out.println("seleziona una data in base alla quale filtrare gli eventi. Sempre formato dd/MM/yyyy");
         filtro = input.nextLine();
+        try {
+            LocalDate filtroData = LocalDate.parse(filtro, formatData);
 
-        filtroData = LocalDate.parse(filtro, formatData);
+            List<Evento> eventiFiltrati = programma.dataEventi(filtroData);
 
-        System.out.println(programma.dataEventi(filtroData));
+            if (eventiFiltrati.isEmpty()) {
+                System.out.println("Nessun evento trovato per la data selezionata.");
+            } else {
+                System.out.println("Eventi nella data " + filtro + ":");
+                for (Evento e : eventiFiltrati) {
+                    System.out.println(e.getData() + " - " + e.getTitolo());
+                }
+            }
+
+        } catch (DateTimeParseException e) {
+            System.out.println("Formato data non valido, riprova con dd/MM/yyyy.");
+        }
 
 
-        
+                
 
 
         input.close();

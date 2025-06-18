@@ -33,16 +33,15 @@ public class ProgrammaEventi {
     /*Il secondo metodo invece ci porta a creare un nuovo oggettoArrayList fatto apposto per includere solo gli oggetti Evento dell ArrayList precedente eventi filtrati per data, che infatti passiamo come parametro */
 
     public List<Evento> dataEventi(LocalDate data){
-        List<Evento> filtrati = new ArrayList<>();
-
+        List<Evento> eventiFiltrati = new ArrayList<>();
         for (Evento evento : this.eventi) {
             if (evento.getData().equals(data)){
-                filtrati.add(evento);
+                eventiFiltrati.add(evento);
             }
-        }
-
-        return filtrati;
+        }    
+        return eventiFiltrati;
     }
+
 
 
     /*Il terzo metodo ci richiede semplicemente il numero di eventi del programma che si ottiene con un semplice metodo tipico di ArrayList */
