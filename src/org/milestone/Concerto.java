@@ -86,7 +86,7 @@ public class Concerto extends Evento {
         String oraFormattata = ora.format(oraFormat);
         String prezzoFormattato =  modello.format(prezzo);
 
-        return dataFormattata + " " + oraFormattata + " - " + getTitolo() + " " + prezzoFormattato;
+        return super.toString() + " " + dataFormattata + " " + oraFormattata + " - " + getTitolo() + " " + prezzoFormattato;
     } 
 
 }

@@ -45,11 +45,11 @@ public class Main {
     /*Dopo aver chiesto il titolo ed averlo registrato come una semplice stringa, andiamo a chiedere la data. La data verrà sempre presa come una stringa ma dobbiamo convertirla in data. Per fare questo inizializziamo il valore data come nullo, tipizzato come una variabile LocalDate. Creiamo anche un pattern tramite DateTimeFormatter che vogliamo venga utilizzato per la data. Allora inizializziamo una variabile booleana dataValida a false.*/
 
         LocalDate data = null;
-        LocalTime ora = null;
+        /*LocalTime ora = null;*/
         boolean dataValida = false;
         DateTimeFormatter formatData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter oraFormat = DateTimeFormatter.ofPattern("HH:mm");
-    /*Prevedendo che il formato data possa non essere quello che vogliamo richiediamo la data all'interno di un ciclo while, la cui condizione di uscita sia che dataValida sia vera. */
+        /*DateTimeFormatter oraFormat = DateTimeFormatter.ofPattern("HH:mm");
+    Prevedendo che il formato data possa non essere quello che vogliamo richiediamo la data all'interno di un ciclo while, la cui condizione di uscita sia che dataValida sia vera. */
         while(!dataValida){
 
             System.out.println("In quale data si svolgerà l'evento?Si prega di scrivere in formato dd/MM/yyyy");
@@ -130,7 +130,7 @@ public class Main {
     //Mi assicuro nella seguente condizione che i posti richiesti non siano superiori a quelli ancora disponibili
                 if(postiDaPrenotare <= (postiTotali - evento.getPostiPrenotati())) {
                     for(int i = 0; i < postiDaPrenotare; i++) {
-                        evento.prenota();
+                        evento.prenota(postiDaPrenotare);
                     }
 
                     System.out.println("Posti prenotati finora: " + evento.getPostiPrenotati());
@@ -187,7 +187,7 @@ public class Main {
         System.out.println("Posti totali: " + evento.getPostiTotali());
         System.out.println("Posti prenotati: " + evento.getPostiPrenotati());
 
-        String titoloProgramma;
+        /*String titoloProgramma;
         int tipo = 0;
         boolean tipoGiusto = false;
 
@@ -384,7 +384,7 @@ public class Main {
 
         } catch (DateTimeParseException e) {
             System.out.println("Formato data non valido, riprova con dd/MM/yyyy.");
-        }
+        }*/
 
 
                 
