@@ -41,6 +41,7 @@ public class ProgrammaEventi {
         }    
         return eventiFiltrati;
     }
+    // algo di min, max, avg (media), filtro (trovo elementi in base a una char); reduce (es: riduci una lista di eventi ad una stringa)
 
 
 
@@ -59,6 +60,10 @@ public class ProgrammaEventi {
 
             eventi.remove(i);
 
+        }
+        for (int i=0;i<eventi.size();i++) {
+
+            eventi.remove(0);
         }
 
     }
